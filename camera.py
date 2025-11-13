@@ -20,9 +20,9 @@ class Projector:
         return np.matmul(rotation_matrix, point) + translation_vector
 
 
-    def __call__(self, point, rotation_matrix=None, traslation_vector=None):
-        if rotation_matrix is not None and traslation_vector is not None:
-            point = self.__extrinsic(point, rotation_matrix, traslation_vector)
+    def __call__(self, point, rotation_matrix=None, translation_vector=None):
+        if rotation_matrix is not None and translation_vector is not None:
+            point = self.__extrinsic(point, rotation_matrix, translation_vector)
         return self.__intrinsic(point)
 
 
