@@ -16,16 +16,13 @@ class Projector:
         return np.matmul(self.__k, p)
     
 
-    def __extrinsic(self, point, rotation_matrix=None, traslation_vector=None):
-        R_T = np.concatenate((rotation_matrix, traslation_vector), axis=1)
-        p = np.append(point, np.array([1]), axis=0)
-        projection_matrix = np.matmul(self.__k, R_T)
-        return np.matmul(projection_matrix, p)
+    def __extrinsic(self, point, rotation_matrix=None, translation_vector=None):
+        return np.matmul(rotation_matrix, point) + translation_vector
 
 
     def __call__(self, point, rotation_matrix=None, traslation_vector=None):
         if rotation_matrix is not None and traslation_vector is not None:
-            return self.__extrinsic(point, rotation_matrix, traslation_vector)
+            point = self.__extrinsic(point, rotation_matrix, traslation_vector)
         return self.__intrinsic(point)
 
 
