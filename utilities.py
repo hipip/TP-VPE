@@ -31,3 +31,20 @@ def rotation_3d(alpha, beta, gamma):
     R = np.matmul(R_z, np.matmul(R_y, R_x))
     return R
 
+
+def cube_vertices(base_point: tuple, diameter: float) -> tuple[tuple]:
+    x, y, z = base_point
+    return (base_point,
+            (x + diameter, y, z),
+            (x, y + diameter, z),
+            (x + diameter, y + diameter, z),
+            (x, y, z + diameter),
+            (x + diameter, y, z + diameter),
+            (x, y + diameter, z + diameter),
+            (x + diameter, y + diameter, z + diameter))
+
+
+if __name__ == "__main__":
+    cube = cube_vertices((1, 1, 1), 2)
+    for vertex in cube:
+        print(vertex)
