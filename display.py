@@ -19,6 +19,21 @@ def draw_line(screen, point1, point2, color=(255, 255, 255), width=1):
     """Draw a line between two 2D points on the screen."""
     pygame.draw.line(screen, color, point1, point2, width)
 
+def create_cube_vertices(size):
+    """Create the 8 vertices of a cube centered at the origin."""
+    points = np.array([
+        [-1, -1, -1],
+        [1, -1, -1],
+        [1, 1, -1],
+        [-1, 1, -1],
+        [-1, -1, 1],
+        [1, -1, 1],
+        [1, 1, 1],
+        [-1, 1, 1]
+    ])
+    return points * size
+
+
 
 
 if __name__ == "__main__":
