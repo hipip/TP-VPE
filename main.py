@@ -5,7 +5,12 @@ from display import init_display, draw_line, project_point, create_cube_vertices
 from camera import Projector
 
 # Constants
-WIDTH, HEIGHT = 800, 600
+WIDTH, HEIGHT = 1280, 720
+FOCAL=500
+ALPHA=1
+BETA=1
+U0=WIDTH/2
+V0=HEIGHT/2
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
@@ -15,8 +20,9 @@ YELLOW = (255, 255, 0)
 ORANGE = (255, 165, 0)
 PURPLE = (128, 0, 128)
 
+
 # Cube definition
-CUBE_SIZE = 100
+CUBE_SIZE = 200
 CUBE_FACES = [
     [0, 1, 2, 3],   # back face
     [4, 5, 6, 7],   # front face
@@ -26,11 +32,11 @@ CUBE_FACES = [
     [1, 2, 6, 5],   # right face
 ]
 FACE_COLORS = [
-    RED,      # back face
-    BLUE,     # front face
-    GREEN,    # bottom face
-    YELLOW,   # top face
-    ORANGE,   # left face
+    YELLOW,      # back face
+    BLUE,     # front face    # bottom face
+    RED,   # top face
+    ORANGE,
+    GREEN,   # left face
     PURPLE,   # right face
 ]
 CUBE_EDGES = [
@@ -61,9 +67,9 @@ def draw_cube(screen, vertices, projector, rotation_matrix):
         draw_line(screen, projected_points[start_idx], projected_points[end_idx], BLACK, 2)
 
 
-if __name__ == "__main__":
+def main():
     screen = init_display(WIDTH, HEIGHT)
-    projector = Projector(focal=500, alpha=1, beta=1, u0=WIDTH/2, v0=HEIGHT/2)
+    projector = Projector(focal=FOCAL, alpha=ALPHA, beta=BETA, u0=U0, v0=V0)
     
     rotation_x = rotation_y = rotation_z = 0
     clock = pygame.time.Clock()
@@ -86,4 +92,7 @@ if __name__ == "__main__":
         pygame.display.flip()
     
     pygame.quit()
+
+if __name__ == "__main__":
+    main()
 
