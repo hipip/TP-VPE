@@ -1,6 +1,7 @@
 import pygame
 import numpy as np
-from display import init_display, draw_line, project_point,create_cube_vertices
+from utilities import rotation_3d
+from display import init_display, draw_line, project_point, create_cube_vertices
 from camera import Projector
 
 # Constants
@@ -40,29 +41,31 @@ CUBE_EDGES = [
 
 vertices = create_cube_vertices(CUBE_SIZE)
 
-def draw_cube(screen, vertices, projector):
-    """Draw a static cube on the screen showing all edges"""
-    identity_rotation = np.eye(3)  # Identity matrix = no rotation
+def draw_cube(screen, vertices, projector, rotation_matrix):
+    """Draw a cube on the screen showing faces and edges"""
     translation_vector = np.array([0., 0., 500])
     
-    # Project all vertices to 2D using Projector's built-in translation
     projected_points = []
     for vertex in vertices:
-        point_2d = project_point(vertex, projector, identity_rotation, translation_vector)
+        point_2d = project_point(vertex, projector, rotation_matrix, translation_vector)
         projected_points.append(point_2d)
     
-    # Draw all edges
+    # Draw faces
+    for i, face in enumerate(CUBE_FACES):
+        face_points = [projected_points[vertex_idx] for vertex_idx in face]
+        pygame.draw.polygon(screen, FACE_COLORS[i], face_points)
+    
+    # Draw edges
     for edge in CUBE_EDGES:
         start_idx, end_idx = edge
         draw_line(screen, projected_points[start_idx], projected_points[end_idx], BLACK, 2)
 
 
 if __name__ == "__main__":
-    # Initialize display
     screen = init_display(WIDTH, HEIGHT)
-    
     projector = Projector(focal=500, alpha=1, beta=1, u0=WIDTH/2, v0=HEIGHT/2)
     
+    rotation_x = rotation_y = rotation_z = 0
     clock = pygame.time.Clock()
     is_running = True
     
@@ -73,8 +76,13 @@ if __name__ == "__main__":
             if event.type == pygame.QUIT:
                 is_running = False
         
+        rotation_x += 0.01
+        rotation_y += 0.01
+        rotation_z += 0.005
+        rotation_matrix = rotation_3d(rotation_z, rotation_y, rotation_x)
+        
         screen.fill(WHITE)
-        draw_cube(screen, vertices, projector)
+        draw_cube(screen, vertices, projector, rotation_matrix)
         pygame.display.flip()
     
     pygame.quit()
