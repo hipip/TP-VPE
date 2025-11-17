@@ -15,6 +15,11 @@ def project_point(point_3d, projector, rotation_matrix=None, translation_vector=
     return (int(projected[0]), int(projected[1]))
 
 
+def draw_line(screen, point1, point2, color=(255, 255, 255), width=1):
+    """Draw a line between two 2D points on the screen."""
+    pygame.draw.line(screen, color, point1, point2, width)
+
+
 
 if __name__ == "__main__":
     point_3d = np.array([3., 3., 3.])
