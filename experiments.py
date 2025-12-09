@@ -38,7 +38,7 @@ def test_projection_with_transformation():
     print(res[:-1])
 
 
-def video_landmark_detection():
+def video_feature_detection():
     # capturer
     cap = cv2.VideoCapture(0)
 
@@ -53,7 +53,7 @@ def video_landmark_detection():
             break
 
         gs_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        key_points = fast.detect(gs_frame)
+        key_points: list[cv2.KeyPoint] = fast.detect(gs_frame)
         frame_kp = cv2.drawKeypoints(frame, key_points, None, (0, 0, 255))
 
         cv2.imshow("Webcam", frame_kp)
@@ -66,5 +66,9 @@ def video_landmark_detection():
     cv2.destroyAllWindows()
 
 
+def chessboard_corners_detection():
+    pass
+
+
 if __name__ == '__main__':
-    video_landmark_detection()
+    video_feature_detection()
