@@ -1,6 +1,7 @@
 from camera import Projector
 import utilities as util
 import numpy as np
+import cv2
 
 
 # intrinsic parameters of a smartphone wide camera (approximately!)
@@ -15,7 +16,7 @@ v0 = 1500 # px
 # camera object
 camera = Projector(focal_length, alpha, beta, u0, v0)
 # a point from the 3d scene [x, y, z]
-point = np.array([3., 1., 1.5])
+point = np.array([0.2, 0.3, 0.6])
 
 
 def test_projection_without_transformation():
@@ -37,5 +38,33 @@ def test_projection_with_transformation():
     print(res[:-1])
 
 
-test_projection_without_transformation()
-test_projection_with_transformation()
+def video_landmark_detection():
+    # capturer
+    cap = cv2.VideoCapture(0)
+
+    # fast detector
+    fast = cv2.FastFeatureDetector_create()
+    fast.setThreshold(30)
+
+    # main loop
+    while True:
+        ret, frame = cap.read()    # ret = True if frame was read successfully
+        if not ret:
+            break
+
+        gs_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        key_points = fast.detect(gs_frame)
+        frame_kp = cv2.drawKeypoints(frame, key_points, None, (0, 0, 255))
+
+        cv2.imshow("Webcam", frame_kp)
+
+        # press 'q' to quit
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+
+if __name__ == '__main__':
+    video_landmark_detection()
