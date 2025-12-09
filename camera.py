@@ -16,7 +16,7 @@ class Projector:
         return np.matmul(self.__k, p)
     
 
-    def __extrinsic(self, point, rotation_matrix=None, translation_vector=None):
+    def __extrinsic(self, point, rotation_matrix, translation_vector):
         return np.matmul(rotation_matrix, point) + translation_vector
 
 
