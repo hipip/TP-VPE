@@ -3,7 +3,7 @@ import numpy as np
 from utilities import rotation_3d
 from display import init_display, draw_line, project_point, create_cube_vertices
 from camera import Projector
-from experiments import video_landmark_detection
+from experiments import video_feature_detection
 
 def cube_procedure():
     # Constants
@@ -100,4 +100,4 @@ def cube_procedure():
 
 
 if __name__ == "__main__":
-    video_landmark_detection()
+    video_feature_detection()
