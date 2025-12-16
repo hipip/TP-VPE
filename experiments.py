@@ -71,9 +71,9 @@ def chessboard_corners_detection():
     # Create a list of paths of images
     images = glob.glob('Calibration Dataset/*.jpg')
     # The path of the first image
-    IMG_PATH = images[15]
+    IMG_PATH = images[8]
     # Read the image
-    img = cv2.imread(IMG_PATH, cv2.IMREAD_COLOR_BGR)
+    img = cv2.imread(IMG_PATH, cv2.IMREAD_COLOR)
     if img is None:
         print("Can't open the image")
         return
@@ -102,6 +102,8 @@ def chessboard_corners_detection():
         new_img = cv2.drawChessboardCorners(img, (7, 7), refined_corners, ret)
         cv2.imshow('Chessboard Corners', new_img)
         cv2.waitKey(0)
+    else:
+        print("Corners not found")
 
     cv2.destroyAllWindows()
 
