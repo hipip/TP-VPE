@@ -2,6 +2,7 @@ from camera import Projector
 import utilities as util
 import numpy as np
 import cv2
+import glob
 
 
 # intrinsic parameters of a smartphone wide camera (approximately!)
@@ -67,8 +68,43 @@ def video_feature_detection():
 
 
 def chessboard_corners_detection():
-    pass
+    # Create a list of paths of images
+    images = glob.glob('Calibration Dataset/*.jpg')
+    # The path of the first image
+    IMG_PATH = images[15]
+    # Read the image
+    img = cv2.imread(IMG_PATH, cv2.IMREAD_COLOR_BGR)
+    if img is None:
+        print("Can't open the image")
+        return
+    
+    # Resize for smooth visualization
+    img = cv2.resize(img, (450, 600))
+    # Display image
+    cv2.imshow('Chessboard', img)
+    cv2.waitKey(0)
+    
+    # Convert to grayscale
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    # Find corners
+    ret, corners = cv2.findChessboardCorners(gray,
+                                             (7, 7),
+                                             flags=cv2.CALIB_CB_ADAPTIVE_THRESH +
+                                             cv2.CALIB_CB_NORMALIZE_IMAGE +
+                                             cv2.CALIB_CB_FAST_CHECK)
+
+    if ret:
+        # Refine corners loactions
+        criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
+        refined_corners = cv2.cornerSubPix(gray, corners, (11, 1), (-1, -1), criteria)
+
+        # Draw the refined corners on the BGR image and display it
+        new_img = cv2.drawChessboardCorners(img, (7, 7), refined_corners, ret)
+        cv2.imshow('Chessboard Corners', new_img)
+        cv2.waitKey(0)
+
+    cv2.destroyAllWindows()
 
 
 if __name__ == '__main__':
-    video_feature_detection()
+    chessboard_corners_detection()
